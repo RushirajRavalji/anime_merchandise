@@ -3,6 +3,8 @@ import 'package:commercial_app/pages/cart_page.dart';
 import 'package:commercial_app/pages/shop_page.dart';
 import 'package:flutter/material.dart';
 
+/// The main page of the application that handles navigation
+/// between different sections (e.g., Shop and Cart).
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -11,84 +13,116 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // This selected index is to control the bottom nav bar
+  // Tracks the currently selected index in the bottom navigation bar
   int _selectedIndex = 0;
 
-  // This method will update our selected index
-  // when the user taps on the bottom bar
+  /// Method to update the selected index when a bottom bar item is tapped.
   void navigateBottomBar(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  // Pages to display
+  // List of pages to display based on the selected index
   final List<Widget> _pages = [
-    // Shop page
-    const ShopPage(),
-
-    // Cart page
-    const CartPage(),
+    const ShopPage(), // Shop page
+    const CartPage(), // Cart page
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Sets the background color of the page
       backgroundColor: Colors.grey[300],
+
+      // Bottom navigation bar
       bottomNavigationBar: BottomNavBar(
-        onTabChange: navigateBottomBar,
+        onTabChange: navigateBottomBar, // Passes index changes to update UI
       ),
+
+      // App bar with a menu icon that opens a drawer
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: const Icon(Icons.menu), // Menu icon
               onPressed: () {
+                // Opens the drawer when the menu button is pressed
                 Scaffold.of(context).openDrawer();
               },
             );
           },
         ),
       ),
+
+      // Drawer containing navigation options
       drawer: Drawer(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.grey[900], // Sets the drawer background color
         child: Column(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // Aligns widgets vertically
           children: [
-            DrawerHeader(
-              child: Image.asset('assets/images/logo.png'),
+            Column(
+              children: [
+                // Logo displayed at the top of the drawer
+                DrawerHeader(
+                  child: Image.asset('assets/images/logo.png'),
+                ),
+                // "Home" navigation option
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: ListTile(
+                    leading: const Icon(Icons.home,
+                        color: Colors.white), // Home icon
+                    title: const Text(
+                      'Home',
+                      style: TextStyle(color: Colors.white), // Text color
+                    ),
+                    onTap: () {
+                      // Closes the drawer when tapped
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                // "Cart" navigation option
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: ListTile(
+                    leading: const Icon(Icons.shopping_bag_rounded,
+                        color: Colors.white), // Cart icon
+                    title: const Text(
+                      'Cart',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      // Closes the drawer when tapped
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
             ),
+            // "Logout" option at the bottom of the drawer
             Padding(
-              padding: const EdgeInsets.only(left: 25.0),
+              padding: const EdgeInsets.only(left: 25.0, bottom: 25.0),
               child: ListTile(
-                leading: const Icon(Icons.home, color: Colors.white),
+                leading: const Icon(Icons.logout,
+                    color: Colors.white), // Logout icon
                 title: const Text(
-                  'Home',
+                  'Logout',
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
-                  // Handle navigation or action
-                  Navigator.pop(context); // Close the drawer
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0),
-              child: ListTile(
-                leading:
-                    const Icon(Icons.shopping_bag_rounded, color: Colors.white),
-                title: const Text(
-                  'Cart',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () {
-                  // Handle navigation or action
-                  Navigator.pop(context); // Close the drawer
+                  // Closes the drawer when tapped
+                  Navigator.pop(context);
                 },
               ),
             ),
           ],
         ),
       ),
+
+      // Displays the selected page based on the current index
       body: _pages[_selectedIndex],
     );
   }

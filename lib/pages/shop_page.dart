@@ -10,3 +10,4 @@ class ShopPage extends StatelessWidget {
     );
   }
 }
+  
