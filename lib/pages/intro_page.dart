@@ -1,3 +1,4 @@
+import 'package:commercial_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -49,13 +50,18 @@ class IntroPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Handle button press
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Start Now',
                     style: TextStyle(
                       fontSize: 26,
-                      color: Colors.yellow,
+                      color: Colors.amber,
                     ),
                   ),
                 ),
