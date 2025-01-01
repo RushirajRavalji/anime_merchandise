@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
 
       // App bar with a menu icon that opens a drawer
       appBar: AppBar(
+        backgroundColor: Colors.grey[300],
         leading: Builder(
           builder: (context) {
             return IconButton(
