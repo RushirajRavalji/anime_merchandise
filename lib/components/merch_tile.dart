@@ -1,15 +1,40 @@
 import 'package:commercial_app/models/actfig.dart';
+import 'package:commercial_app/models/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class MerchTile extends StatelessWidget {
+class MerchTile extends StatefulWidget {
   final Actfig actfig;
-  MerchTile({super.key, required this.actfig});
+  final void Function()? onTap;
+
+  const MerchTile({
+    super.key,
+    required this.actfig,
+    this.onTap,
+  });
+
+  @override
+  State<MerchTile> createState() => _MerchTileState();
+}
+
+class _MerchTileState extends State<MerchTile> {
+  void addActFigToCart() {
+    Provider.of<Cart>(context, listen: false).addItemToCard(widget.actfig);
+
+    // Alert to the user
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Added to Cart"),
+        content: const Text("Check your cart."),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(
-          left: 25), // Add `const` to improve performance.
+      margin: const EdgeInsets.only(left: 25),
       width: 300,
       decoration: BoxDecoration(
         color: Colors.grey[100],
@@ -17,16 +42,16 @@ class MerchTile extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Merch Pics
+          // Merch Image
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Center(
               child: Image.asset(
-                actfig.imagePath,
-                width: 250, // Set the desired width
-                height: 250, // Set the desired height
+                widget.actfig.imagePath,
+                width: 250,
+                height: 250,
               ),
             ),
           ),
@@ -36,57 +61,55 @@ class MerchTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Center(
               child: Text(
-                "Action figure Description",
+                "Action Figure Description",
                 style: TextStyle(
                   color: Colors.grey[600],
-                  fontSize: 14, // Adjusted font size
+                  fontSize: 14,
                 ),
               ),
             ),
           ),
 
-          // Merch Name, Price, and Plus Button in a Row
+          // Merch Name, Price, and Plus Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // Spread the items across the row
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Merch Name and Price (left side)
+                // Merch Name and Price
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      actfig.name,
+                      widget.actfig.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16, // Adjusted font size
+                        fontSize: 18,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8.0), // Space between name and price
-                      child: Text(
-                        actfig.price + ' ₹',
-                        style: const TextStyle(
-                          fontSize: 16, // Adjusted font size
-                          color: Colors.black,
-                        ),
+                    Text(
+                      "${widget.actfig.price} ₹",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
                       ),
                     ),
                   ],
                 ),
 
-                // Plus Button (right side)
-                Container(
-                  padding: const EdgeInsets.all(12), // Adjusted padding
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.amber,
+                // Add Button
+                GestureDetector(
+                  onTap: addActFigToCart,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.amber,
+                    ),
                   ),
                 ),
               ],
